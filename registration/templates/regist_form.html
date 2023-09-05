@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Signin</title>
+    <style>
+.signin_form{
+    display: block;
+    border: solid 1px black;
+    text-align: center;
+    margin-left: 550px;
+    margin-right: 550px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: black 20px 20px 2em;
+
+}
+#submit{
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+    </style>
+</head>
+<body>
+<form class="signin_form" method="POST" action="reg/">
+    {% csrf_token %}
+    Image: <input name="image" type="file" accept="image/jpeg, image/png"><br>
+    Username: <input name="username" type="text"> <br>
+    Password: <input name="password" type="password"> <br>
+    <input id="submit" name="Submit" type="submit"><br>
+    <a href="http://127.0.0.1:8000/signin/">Have accaunt?</a>
+</form>
+</body>
+</html>

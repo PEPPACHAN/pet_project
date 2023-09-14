@@ -9,7 +9,7 @@ users = Registered_Users.objects
 
 
 def regist_form(request):
-    context = {"username": users, "password": users, "image": users}
+    context = {"username": users, "password": users, "image": users}  #Лишнее. убрать
 
     post_username = request.POST.get("username", "404")
     post_password = request.POST.get("password", "404")
@@ -18,7 +18,7 @@ def regist_form(request):
     registrate = Registered_Users(username=post_username, password=make_password(post_password), user_image=post_image)
     registrate.save()
 
-    # login(post_username, post_password)
+    # login(post_username, post_password)  #Изменить и вернуть
 
     return render(request, "regist_form.html", context=context)
 

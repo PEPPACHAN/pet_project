@@ -1,8 +1,7 @@
-from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse
 
 from .models import *
@@ -16,9 +15,7 @@ def regist_form(request):
 
 
 def signin_form(request):
-    context = {"username": users, "password": users}
-
-    return render(request, "signin_form.html", context=context)
+    return render(request, "signin_form.html")
 
 
 def signin_reg(request):
@@ -26,18 +23,19 @@ def signin_reg(request):
         post_username = request.POST.get("username", "404")
         post_password = request.POST.get("password", "404")
 
-        autorize = users.get(username=post_username)
-        if check_password(post_password, autorize.password):
-            login(request, autorize)
-            return HttpResponseRedirect(f"username == {users.get(username=post_username).username}<br>"
-                                f"password == {post_password}<br>")
+        try:
+            autorize = users.get(username=post_username)
+
+        except:
+            return HttpResponse("User doesn't exists")
 
         else:
-            return HttpResponse("Some ERROR. Data in db is:<br>"
-                                f"{users.get(username=post_username, password=post_password)}<br>"
-                                "POST data is:<br>"
-                                f"{post_username}<br>"
-                                f"{post_password}")
+            if check_password(post_password, autorize.password):
+                login(request, autorize)
+                return HttpResponse(f"username == {users.get(username=post_username).username}<br>"
+                                    f"password == {post_password}<br>")
+            else:
+                return HttpResponse("Wrong password")
 
 
 def reg_reg(request):
@@ -56,4 +54,3 @@ def reg_reg(request):
 
     else:
         return HttpResponse("Already registered user or some error")
-

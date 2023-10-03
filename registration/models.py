@@ -13,4 +13,4 @@ class Registered_Users(models.Model):
         ordering = ["username"]
 
     def __str__(self):
-        return f"{self.user_image, self.username, self.password, self.registration_date, self.last_login}"
+        return self.username, self.password

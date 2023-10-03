@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-n)uy)g8#z^!i=^^j#bww#cgv)wcwuh68j(sbhor#$9rd@e&7qu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -52,6 +52,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "store.urls"
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Бэкенд на основе базы данных
 
 TEMPLATES = [
     {

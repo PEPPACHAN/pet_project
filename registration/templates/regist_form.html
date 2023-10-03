@@ -11,8 +11,6 @@
     display: block;
     border: solid 1px black;
     text-align: center;
-    margin-left: 550px;
-    margin-right: 550px;
     padding-top: 30px;
     padding-bottom: 30px;
     border-radius: 10px;
@@ -27,12 +25,11 @@
 </head>
 <body>
 <form class="signin_form" method="POST" action="reg/">
-    {% csrf_token %}
     Image: <input name="image" type="file" accept="image/jpeg, image/png"><br>
     Username: <input name="username" type="text"> <br>
     Password: <input name="password" type="password"> <br>
     <input id="submit" name="Submit" type="submit"><br>
-    <a href="http://127.0.0.1:8000/signin/">Have accaunt?</a>
+    <a href="{% url 'signin' %}">Have accaunt?</a>
 </form>
 </body>
 </html>

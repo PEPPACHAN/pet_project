@@ -15,7 +15,7 @@ def add_products(request):
 
 @csrf_exempt
 def add_to_db(request):  # product_name description key price
-    if request.user.username is not None:
+    if request.session.get("username") is not None:
         username = request.session.get('username')
         user = get_object_or_404(Registered_Users, username=username)
         post_product_name = request.POST.get("product_name", "404")
@@ -60,3 +60,5 @@ def add_to_db(request):  # product_name description key price
 
     else:
         return HttpResponseRedirect(reverse("signin"))
+
+# def buy_a_key(request):

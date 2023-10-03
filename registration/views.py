@@ -44,10 +44,9 @@ def signin_reg(request):
                 request.session['username'] = post_username
 
                 login(request, authorize)
-                if request.user.username:
-                    return HttpResponse(f"username == {request.user.username}<br>"
-                                        f"password == {post_password}<br>"
-                                        f"""<a href="{reverse('add_products')}">prod</a>""")
+                return HttpResponse(f"username == {request.session.get('username')}<br>"
+                                    f"password == {post_password}<br>"
+                                    f"""<a href="{reverse('add_products')}">prod</a>""")
             else:
                 return HttpResponse("Wrong password")
 

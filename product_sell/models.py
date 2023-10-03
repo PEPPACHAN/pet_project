@@ -16,3 +16,14 @@ class ProductSell(models.Model):
         return f"{self.product_name}"
 
 
+class ProductBuy(models.Model):
+    username = models.ForeignKey("registration.Registered_Users", on_delete=models.CASCADE)
+    product_name = models.CharField(max_length=255)
+    product_key = ArrayField(models.CharField(max_length=255))
+    buy_date = ArrayField(models.DateTimeField(auto_now=True, auto_now_add=False))
+
+    class Meta:
+        ordering = ["username"]
+
+    def __str__(self):
+        return f"{self.product_name}"

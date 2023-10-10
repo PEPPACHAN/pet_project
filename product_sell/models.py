@@ -13,7 +13,7 @@ class ProductSell(models.Model):
         ordering = ["username"]
 
     def __str__(self):
-        return f"{self.product_name}"
+        return f"{self.product_name, self.product_price}"
 
 
 class ProductBuy(models.Model):

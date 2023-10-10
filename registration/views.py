@@ -4,11 +4,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.sessions.models import Session
-from django.contrib.sessions.backends.db import SessionStore
+from rest_framework import generics, status
+from rest_framework.response import Response
 
 from .models import *
-
+from .serializers import *
 
 # Create your views here.
 users = Registered_Users.objects
@@ -69,3 +69,29 @@ def reg_reg(request):
 
         else:
             return HttpResponse("Already registered user or some error")
+
+
+class APIForAuthorisation(generics.ListCreateAPIView):
+    queryset = Registered_Users.objects.all()
+    serializer_class = RegistrationAPI
+
+    def perform_create(self, serializer):
+        raw_password = self.request.data.get["password"]
+        username = self.request.data.get["username"]
+        hashed_password = make_password(raw_password)
+        serializer.validated_data["username"] = username
+        serializer.validated_data["password"] = hashed_password
+        serializer.save()
+
+    def post(self, request, *args, **kwargs):
+        username = request.data.get("username")
+        try:
+            user = Registered_Users.objects.get(username=username)
+        except:
+            return Response({"error": "User doesn't exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+        raw_password = request.data.get("password")
+        if check_password(raw_password, user.password):
+            return Response({"message": "User exists"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Wrong password"}, status=status.HTTP_400_BAD_REQUEST)

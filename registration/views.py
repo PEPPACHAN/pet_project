@@ -1,5 +1,6 @@
 from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -33,7 +34,7 @@ def signin_reg(request):
         try:
             authorize = users.get(username=post_username)
 
-        except:
+        except ObjectDoesNotExist:
             return HttpResponse("User doesn't exists")
 
         else:
@@ -61,7 +62,7 @@ def reg_reg(request):
         try:
             users.get(username=post_username)
 
-        except:
+        except ObjectDoesNotExist:
             reg_data = Registered_Users(username=post_username, password=make_password(post_password),
                                         user_image=post_image)
             reg_data.save()
@@ -87,7 +88,7 @@ class APIForAuthorisation(generics.ListCreateAPIView):
         username = request.data.get("username")
         try:
             user = Registered_Users.objects.get(username=username)
-        except:
+        except ObjectDoesNotExist:
             return Response({"error": "User doesn't exist"}, status=status.HTTP_400_BAD_REQUEST)
 
         raw_password = request.data.get("password")

@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -8,7 +9,6 @@ from registration.models import *
 from .models import *
 
 
-@csrf_exempt
 def add_products(request):
     return render(request, "add_product.html")
 
@@ -32,7 +32,7 @@ def add_to_db(request):  # product_name description key price
                 username=user,
                 product_name=post_product_name
             )
-        except:
+        except ObjectDoesNotExist:
             product = ProductSell(
                 username=user,
                 product_name=post_product_name,
@@ -56,25 +56,3 @@ def add_to_db(request):  # product_name description key price
 
     else:
         return HttpResponseRedirect(reverse("signin"))
-
-
-def products_list(request):
-    data = ProductSell.objects.all()
-    context = {"products": data}
-
-    return render(request, "products_list.html", context=context)
-
-
-def product_detail(request, product_id):
-    data = get_object_or_404(ProductSell, pk=product_id)
-    return render(request, "product_detail.html", context={"product": data})
-
-
-def get_key(request, product_id):
-    buyer = ProductBuy  # username(fk) product_name product_key
-    user = get_object_or_404(Registered_Users, username=request.session.get("username"))
-    product = get_object_or_404(ProductSell, pk=product_id)
-    keys = list(ProductSell.objects.get(product).product_key.pop())
-    # if request.session.get("username") is not None:
-    #     buyer(username=user, product_name=product.product_name, product.product_keys)
-    return HttpResponse(f"{keys}")

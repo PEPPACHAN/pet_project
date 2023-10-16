@@ -24,6 +24,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("registration.urls")),
     path("", include("product_sell.urls")),
+    path("", include("product_buy.urls")),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
